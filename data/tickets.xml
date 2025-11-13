@@ -22,7 +22,7 @@
     <title>ANOHER TEST</title>
     <ticket_info>Checking out filtering in view</ticket_info>
     <priority>low</priority>
-  </ticket>
+  <description></description><status>open</status><assignedTo>Dad</assignedTo></ticket>
   <ticket id="TID_1762799725_2667" registered="2025-11-10 18:35:25">
     <first_name>asd</first_name>
     <last_name>zsd</last_name>
@@ -34,7 +34,8 @@
     <priority>high</priority>
     <description/>
     <status>open</status>
-  <assignedTo>Dad</assignedTo></ticket>
+    <assignedTo>Dad</assignedTo>
+  </ticket>
   <ticket id="TID_1762818288_5900" registered="2025-11-10 23:44:48">
     <first_name>Lori</first_name>
     <last_name>E Hogan</last_name>
@@ -46,7 +47,8 @@
     <priority>high</priority>
     <status>closed</status>
     <description/>
-  <assignedTo>Mom</assignedTo></ticket>
+    <assignedTo>Mom</assignedTo>
+  </ticket>
   <ticket id="TID_1762819147_8514" registered="2025-11-10 23:59:07">
     <first_name>1</first_name>
     <last_name>J</last_name>
@@ -288,6 +290,17 @@
     <email>lori.hogan@gmail.com11</email>
     <user_type>staff</user_type>
     <title>HEADINGS CHECK</title>
+    <ticket_info>asdaspidjqwijdoqwjedo</ticket_info>
+    <priority>high</priority>
+    <status>open</status>
+  </ticket>
+  <ticket id="TID_1763046640_9570" registered="2025-11-13 15:10:40">
+    <first_name>rLori</first_name>
+    <last_name>E Hogan</last_name>
+    <date_submitted>11/13/2025 03:10:40 pm</date_submitted>
+    <email>lori.hogan@gmail.com12</email>
+    <user_type>staff</user_type>
+    <title>Assigns adding??</title>
     <ticket_info>asdaspidjqwijdoqwjedo</ticket_info>
     <priority>high</priority>
     <status>open</status>

@@ -1,6 +1,4 @@
 TODO:
-- admin_view.php 
-    - Add "Assigned to?"
 - tech_view.php 
     - Filter by "Assigned to?"
     - Change edit page (or leave as-is)

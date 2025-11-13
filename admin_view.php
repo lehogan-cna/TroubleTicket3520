@@ -73,7 +73,7 @@ if ($tickets_exist) {
                         <th>Description</th>
                         <th>Priority</th>
                         <th>Status</th>
-                        <!-- Add Column for Assigned? -->
+                        <th>Assigned to?</th>
                          <th>Edit?</th>
                         
                     </tr>
@@ -81,7 +81,7 @@ if ($tickets_exist) {
                 <tbody>
                     <?php foreach ($tickets as $ticket): ?>
                         <tr>
-                            <td><?php echo $ticket['id']; ?></td>
+                            <td><?php echo '*' . substr($ticket['id'], -4); ?></td>
                             <td><?php echo $ticket->first_name . ' ' . $ticket->last_name; ?></td>
                             <td><?php echo $ticket->email; ?></td>
                             <td><?php echo $ticket->date_submitted; ?></td>
@@ -90,7 +90,7 @@ if ($tickets_exist) {
                             <td><?php echo $ticket->description; ?></td>
                             <td><?php echo $ticket->priority; ?></td>
                             <td><?php echo $ticket->status; ?></td>
-                            <!-- TODO: Add entry for assigned -->
+                            <td><?php echo $ticket->assignedTo; ?></td>
                             <td><a href="admin_edit.php?id=<?php echo $ticket['id'] ?>"> Edit </a></td>
 
                         </tr>
