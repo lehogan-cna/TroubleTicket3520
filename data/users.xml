@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<users>
+  <user id="USER_1762782493_8900" registered="2025-11-10 13:48:13">
+    <first_name>George</first_name>
+    <last_name>Smith</last_name>
+    <date_of_birth>2222-12-22</date_of_birth>
+    <email>george@smith.com</email>
+    <phone>7097097979</phone>
+    <address>123 George St</address>
+    <membership>enterprise</membership>
+    <newsletter>Yes</newsletter>
+  </user>
+  <user id="USER_1762782638_8772" registered="2025-11-10 13:50:38">
+    <first_name>Ella</first_name>
+    <last_name>Phant</last_name>
+    <date_of_birth>2019-09-09</date_of_birth>
+    <email>ella@google.ca</email>
+    <phone>7097979797</phone>
+    <address>Van Down By the River</address>
+    <membership>basic</membership>
+    <newsletter>No</newsletter>
+  </user>
+  <user id="1">
+    <name>John Doe</name>
+    <email>[email protected]</email>
+    <phone>555-1234</phone>
+    <membership>premium</membership>
+  </user>
+  <user id="2">
+    <name>Jane Smith</name>
+    <email>[email protected]</email>
+    <phone>555-5678</phone>
+    <membership>basic</membership>
+  </user>
+  <user id="USER_1762792003_3293" registered="2025-11-10 16:26:43">
+    <first_name>Lori</first_name>
+    <last_name>Hogan</last_name>
+    <date_of_birth>2025-11-05</date_of_birth>
+    <email>lori.hogan@lori.com</email>
+    <phone>12345</phone>
+    <address>12345</address>
+    <membership>basic</membership>
+    <newsletter>No</newsletter>
+  </user>
+  <user id="USER_1762795584_8438" registered="2025-11-10 17:26:24">
+    <first_name>Lori</first_name>
+    <last_name>Hogan</last_name>
+    <date_of_birth/>
+    <email/>
+    <phone/>
+    <address/>
+    <membership/>
+    <newsletter/>
+  </user>
+</users>
