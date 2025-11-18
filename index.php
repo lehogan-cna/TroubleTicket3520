@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 $first_name = isset($_SESSION['form_data']['first_name']) ? $_SESSION['form_data']['first_name'] : '';
 $last_name = isset($_SESSION['form_data']['last_name']) ? $_SESSION['form_data']['last_name'] : '';
 $date_submitted = isset($_SESSION['form_data']['date_submitted']) ? $_SESSION['form_data']['date_submitted'] : '';
-//$email = isset($_SESSION['form_data']['email']) ? $_SESSION['form_data']['email'] : '';
+$email = isset($_SESSION['form_data']['email']) ? $_SESSION['form_data']['email'] : '';
 $user_type = isset($_SESSION['form_data']['user_type']) ? $_SESSION['form_data']['user_type'] : '';
 $status = isset($_SESSION['form_data']['status']) ? $_SESSION['form_data']['status'] : "open";
 ?>

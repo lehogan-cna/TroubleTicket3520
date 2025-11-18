@@ -22,7 +22,10 @@
     <title>ANOHER TEST</title>
     <ticket_info>Checking out filtering in view</ticket_info>
     <priority>low</priority>
-  <description></description><status>open</status><assignedTo>Dad</assignedTo></ticket>
+    <description/>
+    <status>open</status>
+    <assignedTo>Dad</assignedTo>
+  </ticket>
   <ticket id="TID_1762799725_2667" registered="2025-11-10 18:35:25">
     <first_name>asd</first_name>
     <last_name>zsd</last_name>
@@ -44,10 +47,10 @@
     <user_type>staff</user_type>
     <title>Testing</title>
     <ticket_info>123</ticket_info>
-    <priority>high</priority>
-    <status>closed</status>
-    <description/>
-    <assignedTo>Mom</assignedTo>
+    <priority>low</priority>
+    <status>open</status>
+    <description>Here be dragons</description>
+    <assignedTo>bob@bob.ca</assignedTo>
   </ticket>
   <ticket id="TID_1762819147_8514" registered="2025-11-10 23:59:07">
     <first_name>1</first_name>
@@ -302,6 +305,17 @@
     <user_type>staff</user_type>
     <title>Assigns adding??</title>
     <ticket_info>asdaspidjqwijdoqwjedo</ticket_info>
+    <priority>high</priority>
+    <status>open</status>
+  </ticket>
+  <ticket id="TID_1763392823_2451" registered="2025-11-17 15:20:23">
+    <first_name>Lori</first_name>
+    <last_name>Hogan</last_name>
+    <date_submitted>11/17/2025 03:20:23 pm</date_submitted>
+    <email>lori.hogan@cna.nl.ca</email>
+    <user_type>staff</user_type>
+    <title>Help</title>
+    <ticket_info>I need help</ticket_info>
     <priority>high</priority>
     <status>open</status>
   </ticket>

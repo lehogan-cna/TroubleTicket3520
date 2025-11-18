@@ -44,7 +44,7 @@ if ($tickets_exist) {
                 <p>No tickets registered yet.</p>
             </div>
         <?php else: ?>
-            
+            <p> Tickets for <?php echo $_SESSION['form_data']['email'] ?> </p>
             <table id="ticketsTable">
                 <thead>
                     <tr>
@@ -52,31 +52,28 @@ if ($tickets_exist) {
                         <th>Name</th>
                         <th>Email</th>
                         <th>Date Submitted</th>
-                        <th>User Type</th>
                         <th>Title</th>
                         <th>Description</th>
                         <th>Priority</th>
                         <th>Status</th>
-                        <!-- Add Column for Assigned? -->
-                         <th>Edit?</th>
+                        <th>Assigned to?</th>
+                        <th>Edit?</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ($tickets as $ticket): ?>
-                        
                         <tr>
-                            <?php if ($ticket->email == $_SESSION['form_data']['email']): ?>
-                                <td><?php echo $ticket['id']; ?></td>
+                            <?php if ($ticket->assignedTo == $_SESSION['form_data']['email']): ?>
+                                <td><?php echo '*' . substr($ticket['id'], -4); ?></td>
                                 <td><?php echo $ticket->first_name . ' ' . $ticket->last_name; ?></td>
                                 <td><?php echo $ticket->email; ?></td>
                                 <td><?php echo $ticket->date_submitted; ?></td>
-                                <td><?php echo ucfirst($ticket->user_type); ?></td>
                                 <td><?php echo $ticket->title; ?></td>
                                 <td><?php echo $ticket->ticket_info; ?></td>
                                 <td><?php echo $ticket->priority; ?></td>
-                                <!-- TODO: Add entry for assigned -->
+                                <td><?php echo $ticket->assignedTo; ?></td>
                                 <td><?php echo $ticket->status; ?></td>
-                                <td><a href="admin_edit.php?id=<?php echo $ticket['id'] ?>"> Edit </a></td>
+                                <td><a href="tech_edit.php?id=<?php echo $ticket['id'] ?>"> Edit </a></td>
                             <?php endif; ?>
                         </tr>
                     <?php endforeach; ?>

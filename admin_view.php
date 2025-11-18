@@ -116,10 +116,11 @@ if ($tickets_exist) {
                 const row = rows[i];
                 const name = row.cells[1].textContent.toLowerCase();
                 const email = row.cells[2].textContent.toLowerCase();
+                const title = row.cells[5].textContent.toLowerCase();
                 const priority = row.cells[7].textContent.toLowerCase();
                 const status = row.cells[8].textContent.toLowerCase();
 
-                const matchesSearch = name.includes(searchInput) || email.includes(searchInput);
+                const matchesSearch = name.includes(searchInput) || email.includes(searchInput) || title.includes(searchInput);
                 const matchesPriority = priorityFilter === '' || priority.includes(priorityFilter);
                 const matchesStatus = statusFilter === '' || status.includes(statusFilter);
                 
