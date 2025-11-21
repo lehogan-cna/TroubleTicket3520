@@ -2,3 +2,88 @@ TODO:
 - tech_view.php 
     - Filter by "Assigned to?"
     - Change edit page (or leave as-is)
+
+Great question! Here's how to migrate from XML file interactions to MySQL table interactions in PHP:
+
+## Key Steps
+
+### 1. **Create the MySQL Table Structure**
+First, design a table that mirrors your XML structure. For example, if your XML looks like:
+```xml
+<products>
+  <product>
+    <id>1</id>
+    <name>Widget</name>
+    <price>19.99</price>
+  </product>
+</products>
+```
+
+Create a corresponding table:
+```sql
+CREATE TABLE products (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255),
+    price DECIMAL(10,2)
+);
+```
+
+### 2. **Replace XML Reading with MySQL Queries**
+
+**Old XML approach:**
+```php
+$xml = simplexml_load_file('products.xml');
+foreach ($xml->product as $product) {
+    echo $product->name;
+}
+```
+
+**New MySQL approach:**
+```php
+$mysqli = new mysqli("localhost", "username", "password", "database");
+$result = $mysqli->query("SELECT * FROM products");
+while ($row = $result->fetch_assoc()) {
+    echo $row['name'];
+}
+```
+
+### 3. **Replace XML Writing with INSERT/UPDATE**
+
+**Old XML approach:**
+```php
+$xml = simplexml_load_file('products.xml');
+$product = $xml->addChild('product');
+$product->addChild('name', 'New Item');
+$xml->asXML('products.xml');
+```
+
+**New MySQL approach:**
+```php
+$stmt = $mysqli->prepare("INSERT INTO products (name, price) VALUES (?, ?)");
+$stmt->bind_param("sd", $name, $price);
+$stmt->execute();
+```
+
+### 4. **Handle Nested/Complex Structures**
+
+For nested XML, you'll need related tables with foreign keys:
+- One-to-many relationships: Use separate tables joined by IDs
+- Attributes: Convert to regular columns
+- Hierarchical data: Use parent_id columns for self-referencing
+
+### 5. **Use PDO or MySQLi Consistently**
+
+I recommend PDO for better portability:
+```php
+$pdo = new PDO("mysql:host=localhost;dbname=database", "username", "password");
+$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+```
+
+### 6. **Migration Strategy**
+
+1. Create a one-time import script to transfer existing XML data to MySQL
+2. Update all XML read operations to SELECT queries
+3. Update all XML write operations to INSERT/UPDATE/DELETE queries
+4. Test thoroughly before removing XML dependencies
+
+The main advantage is that MySQL queries are typically faster, more scalable, and support better concurrent access than file-based XML operations.

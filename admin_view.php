@@ -45,8 +45,7 @@ if ($tickets_exist) {
             <p><strong>Total Tickets: <?php echo count($tickets); ?></strong></p>
 
             <div class="filter-group">
-                <input type="text" id="searchInput" placeholder="Search..." 
-                       onkeyup="filterTable()">
+                <input type="text" id="searchInput" placeholder="Search..." onkeyup="filterTable()">
                 <select id="priorityFilter" onchange="filterTable()">
                     <option value="">All</option>
                     <option value="high">High</option>
@@ -74,7 +73,7 @@ if ($tickets_exist) {
                         <th>Priority</th>
                         <th>Status</th>
                         <th>Assigned to?</th>
-                         <th>Edit?</th>
+                        <th>Edit?</th>
                         
                     </tr>
                 </thead>
