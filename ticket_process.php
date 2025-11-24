@@ -1,4 +1,17 @@
 <?php
+
+
+$connect = new mysqli("localhost",
+                      "tt_admin",
+                      "tt",
+                      "troubleticket");
+
+                      // Check connection
+if ($connect->connect_error) {
+  die("Connection failed: " . $conn->connect_error);
+}
+echo "Connected successfully";
+
 session_start();
 
 // Verify all required data is present
@@ -18,7 +31,7 @@ if (!file_exists('data')) {
 
 // Function to generate unique ID
 function generateUserId() {
-    return 'TID_' . time() . '_' . rand(1000, 9999);
+    return rand(1000, 9999);
 }
 
 // Load existing XML or create new one
@@ -31,20 +44,43 @@ if (file_exists($xml_file)) {
 
 // Create new user element
 $user = $xml->addChild('ticket');
-$user->addAttribute('id', generateUserId());
+$tid = generateUserId();
+$user->addAttribute('id', $tid);
 $user->addAttribute('registered', date('Y-m-d H:i:s'));
 
 // Add user data from session
-$user->addChild('first_name', $_SESSION['form_data']['first_name']);
-$user->addChild('last_name', $_SESSION['form_data']['last_name']);
-$user->addChild('date_submitted', $_SESSION['form_data']['date_submitted']);
-$user->addChild('email', $_SESSION['form_data']['email']);
-$user->addChild('user_type', $_SESSION['form_data']['user_type']);
-$user->addChild('title', $_SESSION['form_data']['title']);
-$user->addChild('ticket_info', $_SESSION['form_data']['ticket_info']);
-$user->addChild('priority', $_SESSION['form_data']['priority']);
-$user->addChild('status', $_SESSION['form_data']['status']);
+$user->addChild('first_name', $_SESSION['form_data']['first_name']); //User.name
+$user->addChild('last_name', $_SESSION['form_data']['last_name']); //User.name
+$user->addChild('date_submitted', $_SESSION['form_data']['date_submitted']); //Tickets.dateCreated
+$user->addChild('email', $_SESSION['form_data']['email']); //User.email
+$user->addChild('user_type', $_SESSION['form_data']['user_type']); //User.type
+$user->addChild('title', $_SESSION['form_data']['title']); //Tickets.title
+$user->addChild('ticket_info', $_SESSION['form_data']['ticket_info']); //Tickets.description
+$user->addChild('priority', $_SESSION['form_data']['priority']); //Tickets.priority
+$user->addChild('status', $_SESSION['form_data']['status']); //Tickets.status
 
+// MySQL - Find if user w/ email in database
+$user_query = "SELECT uid FROM User WHERE email = ?";
+$email = $_SESSION['form_data']['email'];
+$stmt = $connect->prepare($user_query);
+$stmt->bind_param("s", $_SESSION['form_data']['email']);
+$stmt->execute();
+$result = $stmt->get_result();
+if ($result == false) echo "No rows";
+$row = $result->fetch_assoc();
+if (is_null($row)) {
+    // User not in database, so let's create them
+    $uid = rand(1000, 9999);
+    $name = $_SESSION['form_data']['first_name'];
+    $stmt = $connect->prepare("INSERT INTO User (uid, name, type, email) VALUES (?,?,'STA',?)");
+    $stmt->bind_param("iss", $uid, $name, $email) ;
+    $stmt->execute();
+} else
+    $uid = $row['uid'];
+
+$stmt = $connect->prepare("INSERT INTO Ticket (tid, title, description, uid) VALUES (?,?,?,?)");
+$stmt->bind_param("isss", $tid, $_SESSION['form_data']['title'], $_SESSION['form_data']['ticket_info'], $uid) ;
+$stmt->execute();
 
 // Format and save XML
 $dom = new DOMDocument('1.0');
