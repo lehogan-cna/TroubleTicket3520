@@ -1,9 +1,6 @@
 <?php
-$xml_file = 'data/tickets.xml';
-$xml = simplexml_load_file($xml_file);
 
 $id = $_GET['id'];
-$ticket = null;
 $info = null;
 
 $connect = new mysqli("localhost", "tt_admin","tt","troubleticket");
@@ -11,14 +8,6 @@ $connect = new mysqli("localhost", "tt_admin","tt","troubleticket");
 // Check connection
 if ($connect->connect_error) {
     die("Connection failed: " . $conn->connect_error);
-}
-echo "Connected successfully";
-
-foreach ($xml->ticket as $t) {
-    if ((string)$t['id'] === $id) {
-        $ticket = $t;
-        break;
-    }
 }
 
 // MYSQL
@@ -30,11 +19,6 @@ $result = $stmt->get_result();
 $info = $result->fetch_assoc();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    /*$ticket->title = $_POST['title'];
-    $ticket->description = $_POST['description'];
-    $ticket->priority = $_POST['priority'];
-    $ticket->status = $_POST['status'];
-    $ticket->assignedTo = $_POST['assignedTo'];*/
 
     $title = $_POST['title'];
     $description = $_POST['description'];
@@ -46,7 +30,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->bind_param("ssisii", $title, $description, $priority, $status, $assignedTo, $id);
     $stmt->execute();
 
-    $xml->asXML($xml_file); // Save changes back to XML
     header('Location: admin_view.php'); // Redirect back
     exit;
 }

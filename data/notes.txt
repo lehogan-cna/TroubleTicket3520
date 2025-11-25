@@ -1,5 +1,4 @@
 TODO:
-- admin_edit: Use database!!
 - tech_view: Use database!!
 - tech_edit: Use database!!
 

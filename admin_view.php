@@ -6,26 +6,14 @@ $connect = new mysqli("localhost", "tt_admin","tt","troubleticket");
 if ($connect->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
-echo "Connected successfully";
 
 session_start();
-
-$xml_file = 'data/tickets.xml';
-
-// Check if XML file exists
-$tickets_exist = file_exists($xml_file);
-
-if ($tickets_exist) {
-    $xml = simplexml_load_file($xml_file);
-    $tickets = $xml->ticket;
-}
 
 // MYSQL
 $user_query = "SELECT * FROM Ticket JOIN User ON User.uid = Ticket.uid";
 $stmt = $connect->prepare($user_query);
 $stmt->execute();
 $result = $stmt->get_result();
-
 
 ?>
 
@@ -56,12 +44,12 @@ $result = $stmt->get_result();
     <div class="container">
         <h2>Tickets Submitted</h2>
 
-        <?php if (!$tickets_exist || count($tickets) == 0): ?>
+        <?php if ($result->num_rows == 0): ?>
             <div class="error">
                 <p>No tickets registered yet.</p>
             </div>
         <?php else: ?>
-            <p><strong>Total Tickets: <?php echo count($tickets); ?></strong></p>
+            <p><strong>Total Tickets: <?php echo $result->num_rows; ?></strong></p>
 
             <div class="filter-group">
                 <input type="text" id="searchInput" placeholder="Search..." onkeyup="filterTable()">
