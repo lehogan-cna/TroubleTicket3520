@@ -1,9 +1,9 @@
 TODO:
-- tech_view.php 
-    - Filter by "Assigned to?"
-    - Change edit page (or leave as-is)
+- admin_edit: Use database!!
+- tech_view: Use database!!
+- tech_edit: Use database!!
 
-Great question! Here's how to migrate from XML file interactions to MySQL table interactions in PHP:
+Here's how to migrate from XML file interactions to MySQL table interactions in PHP:
 
 ## Key Steps
 

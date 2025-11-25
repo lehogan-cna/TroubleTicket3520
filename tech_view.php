@@ -21,8 +21,9 @@ if ($tickets_exist) {
 }
 
 // MYSQL
-$user_query = "SELECT * FROM Ticket";
+$user_query = "SELECT * FROM Ticket JOIN Tech ON Tech.eid = Ticket.eid_t WHERE Tech.email = ?";
 $stmt = $connect->prepare($user_query);
+$stmt->bind_param("s", $_SESSION['form_data']['email']);
 $stmt->execute();
 $result = $stmt->get_result();
 
@@ -77,22 +78,21 @@ $result = $stmt->get_result();
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($tickets as $ticket): ?>
+                    <?php while ($row = $result->fetch_assoc()): ?>
                         <tr>
-                            <?php if ($ticket->assignedTo == $_SESSION['form_data']['email']): ?>
-                                <td><?php echo '*' . substr($ticket['id'], -4); ?></td>
-                                <td><?php echo $ticket->first_name . ' ' . $ticket->last_name; ?></td>
-                                <td><?php echo $ticket->email; ?></td>
-                                <td><?php echo $ticket->date_submitted; ?></td>
+                                <td><?php echo $row['tid']; ?></td>
+                                <td><?php echo $row['name']; ?></td>
+                                <td><?php echo $row['email']; ?></td>
+                                <td><?php echo $row['dateCreated']; ?></td>
                                 <td><?php echo $ticket->title; ?></td>
-                                <td><?php echo $ticket->ticket_info; ?></td>
-                                <td><?php echo $ticket->priority; ?></td>
-                                <td><?php echo $ticket->assignedTo; ?></td>
-                                <td><?php echo $ticket->status; ?></td>
+                                <td><?php echo $row['title']; ?></td>
+                                <td><?php echo $row['description']; ?></td>
+                                <td><?php echo $row['name']; ?></td>
+                                <td><?php echo $row['status']; ?></td>
                                 <td><a href="tech_edit.php?id=<?php echo $ticket['id'] ?>"> Edit </a></td>
-                            <?php endif; ?>
+                            
                         </tr>
-                    <?php endforeach; ?>
+                    <?php endwhile; ?>
                 </tbody>
             </table>
         <?php endif; ?>
