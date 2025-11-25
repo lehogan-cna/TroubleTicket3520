@@ -1,4 +1,13 @@
 <?php
+
+$connect = new mysqli("localhost", "tt_admin","tt","troubleticket");
+
+// Check connection
+if ($connect->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+echo "Connected successfully";
+
 session_start();
 
 $xml_file = 'data/tickets.xml';
@@ -10,6 +19,13 @@ if ($tickets_exist) {
     $xml = simplexml_load_file($xml_file);
     $tickets = $xml->ticket;
 }
+
+// MYSQL
+$user_query = "SELECT * FROM Ticket";
+$stmt = $connect->prepare($user_query);
+$stmt->execute();
+$result = $stmt->get_result();
+
 ?>
 
 <!DOCTYPE html>

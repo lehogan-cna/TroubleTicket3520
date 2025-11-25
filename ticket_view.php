@@ -1,7 +1,16 @@
 <?php
+
+$connect = new mysqli("localhost", "tt_admin","tt","troubleticket");
+
+// Check connection
+if ($connect->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+echo "Connected successfully";
+
 session_start();
 
-$xml_file = 'data/tickets.xml';
+/*$xml_file = 'data/tickets.xml';
 
 // Check if XML file exists
 $tickets_exist = file_exists($xml_file);
@@ -9,7 +18,16 @@ $tickets_exist = file_exists($xml_file);
 if ($tickets_exist) {
     $xml = simplexml_load_file($xml_file);
     $tickets = $xml->ticket;
-}
+}*/
+
+// MYSQL
+$user_query = "SELECT * FROM Ticket JOIN User ON User.uid = Ticket.uid WHERE User.email = ?";
+$stmt = $connect->prepare($user_query);
+$stmt->bind_param("s", $_SESSION['form_data']['email']);
+$stmt->execute();
+$result = $stmt->get_result();
+
+
 ?>
 
 <!DOCTYPE html>
@@ -39,12 +57,12 @@ if ($tickets_exist) {
     <div class="container">
         <h2>Tickets Submitted</h2>
 
-        <?php if (!$tickets_exist || count($tickets) == 0): ?>
+        <?php if ($result->num_rows == 0): ?>
             <div class="error">
                 <p>No tickets registered yet.</p>
             </div>
         <?php else: ?>
-            
+            <p><?php echo $_SESSION['form_data']['email'] ?></p>
             <table id="ticketsTable">
                 <thead>
                     <tr>
@@ -60,22 +78,22 @@ if ($tickets_exist) {
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($tickets as $ticket): ?>
+                    <?php while ($row = $result->fetch_assoc()): ?>
                         
                         <tr>
-                            <?php if ($ticket->email == $_SESSION['form_data']['email']): ?>
-                                <td><?php echo $ticket['id']; ?></td>
-                                <td><?php echo $ticket->first_name . ' ' . $ticket->last_name; ?></td>
-                                <td><?php echo $ticket->email; ?></td>
-                                <td><?php echo $ticket->date_submitted; ?></td>
-                                <td><?php echo ucfirst($ticket->user_type); ?></td>
-                                <td><?php echo $ticket->title; ?></td>
-                                <td><?php echo $ticket->ticket_info; ?></td>
-                                <td><?php echo $ticket->priority; ?></td>
-                                <td><?php echo $ticket->status; ?></td>
+                            <?php if ($row['email'] == $_SESSION['form_data']['email']): ?>
+                                <td><?php echo $row['tid']; ?></td>
+                                <td><?php echo $row['name']; ?></td>
+                                <td><?php echo $row['email']; ?></td>
+                                <td><?php echo $row['dateCreated']; ?></td>
+                                <td><?php echo $row['type']; ?></td>
+                                <td><?php echo $row['title']; ?></td>
+                                <td><?php echo $row['description']; ?></td>
+                                <td><?php echo $row['priority']; ?></td>
+                                <td><?php echo $row['status']; ?></td>
                             <?php endif; ?>
                         </tr>
-                    <?php endforeach; ?>
+                    <?php endwhile; ?>
                 </tbody>
             </table>
         <?php endif; ?>

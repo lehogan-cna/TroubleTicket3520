@@ -1,21 +1,22 @@
 <?php
 
 
-$connect = new mysqli("localhost",
-                      "tt_admin",
-                      "tt",
-                      "troubleticket");
+$connect = new mysqli("localhost", "tt_admin","tt","troubleticket");
 
-                      // Check connection
+// Check connection
 if ($connect->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
+    die("Connection failed: " . $conn->connect_error);
 }
 echo "Connected successfully";
 
 session_start();
+$dateTime = new DateTime();
+    
+$formattedDateTime = $dateTime->format('Y-m-d H:i:s');
+
 
 // Verify all required data is present
-if (!isset($_SESSION['form_data']['first_name']) || 
+if (!isset($_SESSION['form_data']['first_name']) ||
     !isset($_SESSION['form_data']['title'])) {
     header('Location: index.php');
     exit;
@@ -71,15 +72,17 @@ $row = $result->fetch_assoc();
 if (is_null($row)) {
     // User not in database, so let's create them
     $uid = rand(1000, 9999);
-    $name = $_SESSION['form_data']['first_name'];
+    $name = $_SESSION['form_data']['first_name'] . ' ' . $_SESSION['form_data']['last_name'];
+    $dateTime = new DateTime();
+    $formattedDateTime = $dateTime->format('Y-m-d H:i:s');
     $stmt = $connect->prepare("INSERT INTO User (uid, name, type, email) VALUES (?,?,'STA',?)");
     $stmt->bind_param("iss", $uid, $name, $email) ;
     $stmt->execute();
 } else
     $uid = $row['uid'];
 
-$stmt = $connect->prepare("INSERT INTO Ticket (tid, title, description, uid) VALUES (?,?,?,?)");
-$stmt->bind_param("isss", $tid, $_SESSION['form_data']['title'], $_SESSION['form_data']['ticket_info'], $uid) ;
+$stmt = $connect->prepare("INSERT INTO Ticket (tid, title, description, uid, dateCreated, priority) VALUES (?,?,?,?,?,?)");
+$stmt->bind_param("issssi", $tid, $_SESSION['form_data']['title'], $_SESSION['form_data']['ticket_info'], $uid, $formattedDateTime, $_SESSION['form_data']['priority']) ;
 $stmt->execute();
 
 // Format and save XML

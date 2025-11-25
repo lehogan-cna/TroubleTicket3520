@@ -1,4 +1,15 @@
 <?php
+
+$connect = new mysqli("localhost", "tt_admin","tt","troubleticket");
+
+// Check connection
+if ($connect->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+echo "Connected successfully";
+
+session_start();
+
 $xml_file = 'data/tickets.xml';
 
 // Check if XML file exists
@@ -8,6 +19,14 @@ if ($tickets_exist) {
     $xml = simplexml_load_file($xml_file);
     $tickets = $xml->ticket;
 }
+
+// MYSQL
+$user_query = "SELECT * FROM Ticket JOIN User ON User.uid = Ticket.uid";
+$stmt = $connect->prepare($user_query);
+$stmt->execute();
+$result = $stmt->get_result();
+
+
 ?>
 
 <!DOCTYPE html>
@@ -78,22 +97,22 @@ if ($tickets_exist) {
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($tickets as $ticket): ?>
+                    <?php while ($row = $result->fetch_assoc()): ?>
                         <tr>
-                            <td><?php echo '*' . substr($ticket['id'], -4); ?></td>
-                            <td><?php echo $ticket->first_name . ' ' . $ticket->last_name; ?></td>
-                            <td><?php echo $ticket->email; ?></td>
-                            <td><?php echo $ticket->date_submitted; ?></td>
-                            <td><?php echo ucfirst($ticket->user_type); ?></td>
-                            <td><?php echo $ticket->title; ?></td>
-                            <td><?php echo $ticket->description; ?></td>
-                            <td><?php echo $ticket->priority; ?></td>
-                            <td><?php echo $ticket->status; ?></td>
-                            <td><?php echo $ticket->assignedTo; ?></td>
-                            <td><a href="admin_edit.php?id=<?php echo $ticket['id'] ?>"> Edit </a></td>
+                            <td><?php echo $row['tid']; ?></td>
+                            <td><?php echo $row['name']; ?></td>
+                            <td><?php echo $row['email']; ?></td>
+                            <td><?php echo $row['dateCreated']; ?></td>
+                            <td><?php echo $row['type']; ?></td>
+                            <td><?php echo $row['title']; ?></td>
+                            <td><?php echo $row['description']; ?></td>
+                            <td><?php echo $row['priority']; ?></td>
+                            <td><?php echo $row['status']; ?></td>
+                            <td><?php echo $row['eid']; ?></td>
+                            <td><a href="admin_edit.php?id=<?php echo $row['tid'] ?>"> Edit </a></td>
 
                         </tr>
-                    <?php endforeach; ?>
+                    <?php endwhile; ?>
                 </tbody>
             </table>
         <?php endif; ?>
