@@ -1,6 +1,8 @@
 TODO:
-- tech_view: Use database!!
-- tech_edit: Use database!!
+- TEST different scenarios
+- Change ticket, employee id protocols
+- Aesthetics
+- Sequence diagrams
 
 Here's how to migrate from XML file interactions to MySQL table interactions in PHP:
 
