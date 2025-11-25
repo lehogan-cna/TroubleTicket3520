@@ -1,25 +1,34 @@
 <?php
-$xml_file = 'data/tickets.xml';
-$xml = simplexml_load_file($xml_file);
 
 $id = $_GET['id'];
-$ticket = null;
+$info = null;
 
-foreach ($xml->ticket as $t) {
-    if ((string)$t['id'] === $id) {
-        $ticket = $t;
-        break;
-    }
+$connect = new mysqli("localhost", "tt_admin","tt","troubleticket");
+
+// Check connection
+if ($connect->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $ticket->title = $_POST['title'];
-    $ticket->description = $_POST['description'];
-    $ticket->priority = $_POST['priority'];
-    $ticket->status = $_POST['status'];
-    $ticket->assignedTo = $_POST['assignedTo'];
+// MYSQL
+$user_query = "SELECT * FROM Ticket WHERE tid = ?";
+$stmt = $connect->prepare($user_query);
+$stmt->bind_param("i", $id);
+$stmt->execute();
+$result = $stmt->get_result();
+$info = $result->fetch_assoc();
 
-    $xml->asXML($xml_file); // Save changes back to XML
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $title = $_POST['title'];
+    $description = $_POST['description'];
+    $priority = $_POST['priority'];
+    $status = substr($_POST['status'], 0, 3);
+    $assignedTo = empty($_POST['assignedTo']) ? '' : $_POST['assignedTo'];
+    $user_query = "UPDATE Ticket SET title = ?, description = ?, priority = ?, status = ? WHERE tid = ?";
+    $stmt = $connect->prepare($user_query);
+    $stmt->bind_param("ssisi", $title, $description, $priority, $status, $id);
+    $stmt->execute();
+
     header('Location: tech_view.php'); // Redirect back
     exit;
 }
@@ -52,21 +61,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="container">
 
     <form method="post">
-        <label>Title: <input type="text" name="title" value="<?php echo $ticket->title; ?>"></label><br>
-        <label>Description: <textarea name="description"><?php echo $ticket->description; ?></textarea></label><br>
+        <label>Title: <input type="text" name="title" value="<?php echo $info['title']; ?>"></label><br>
+        <label>Description: <textarea name="description"><?php echo $info['description']; ?></textarea></label><br>
         <label>Priority:
             <select name="priority">
-                <option value="high" <?php if($ticket->priority=='high') echo 'selected'; ?>>High</option>
-                <option value="med" <?php if($ticket->priority=='med') echo 'selected'; ?>>Medium</option>
-                <option value="low" <?php if($ticket->priority=='low') echo 'selected'; ?>>Low</option>
+                <option value="high" <?php if($info['priority']==2) echo 'selected'; ?>>High</option>
+                <option value="med" <?php if($info['priority']==1) echo 'selected'; ?>>Medium</option>
+                <option value="low" <?php if($info['priority']==0) echo 'selected'; ?>>Low</option>
             </select>
         </label><br>
-        <label> Assigned to: <input type="text" name="assignedTo" value="<?php echo $ticket->assignedTo; ?>"></label><br>
+        <label> Assigned to:  <?php echo $info['eid_t']; ?></label><br>
         <label>Status:
             <select name="status">
-                <option value="open" <?php if($ticket->status=='open') echo 'selected'; ?>>Open</option>
-                <option value="closed" <?php if($ticket->status=='closed') echo 'selected'; ?>>Closed</option>
-                <option value="assigned" <?php if($ticket->status=='assigned') echo 'selected'; ?>>Assigned</option>
+                <option value="open" <?php if($info['status'] =='ope') echo 'selected'; ?>>Open</option>
+                <option value="closed" <?php if($info['status'] == 'clo') echo 'selected'; ?>>Closed</option>
+                <option value="assigned" <?php if($info['status'] == 'ass') echo 'selected'; ?>>Assigned</option>
             </select>
         </label><br>
         <button type="submit">Save Changes</button>

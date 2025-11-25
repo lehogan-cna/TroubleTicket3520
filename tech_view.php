@@ -10,7 +10,7 @@ echo "Connected successfully";
 
 session_start();
 
-$xml_file = 'data/tickets.xml';
+/*$xml_file = 'data/tickets.xml';
 
 // Check if XML file exists
 $tickets_exist = file_exists($xml_file);
@@ -18,7 +18,7 @@ $tickets_exist = file_exists($xml_file);
 if ($tickets_exist) {
     $xml = simplexml_load_file($xml_file);
     $tickets = $xml->ticket;
-}
+}*/
 
 // MYSQL
 $user_query = "SELECT * FROM Ticket JOIN Tech ON Tech.eid = Ticket.eid_t WHERE Tech.email = ?";
@@ -56,7 +56,7 @@ $result = $stmt->get_result();
     <div class="container">
         <h2>Tickets Assigned</h2>
 
-        <?php if (!$tickets_exist || count($tickets) == 0): ?>
+        <?php if ($result->num_rows == 0): ?>
             <div class="error">
                 <p>No tickets registered yet.</p>
             </div>
@@ -73,7 +73,6 @@ $result = $stmt->get_result();
                         <th>Description</th>
                         <th>Priority</th>
                         <th>Status</th>
-                        <th>Assigned to?</th>
                         <th>Edit?</th>
                     </tr>
                 </thead>
@@ -84,12 +83,11 @@ $result = $stmt->get_result();
                                 <td><?php echo $row['name']; ?></td>
                                 <td><?php echo $row['email']; ?></td>
                                 <td><?php echo $row['dateCreated']; ?></td>
-                                <td><?php echo $ticket->title; ?></td>
                                 <td><?php echo $row['title']; ?></td>
                                 <td><?php echo $row['description']; ?></td>
-                                <td><?php echo $row['name']; ?></td>
+                                <td><?php echo $row['priority']; ?></td>
                                 <td><?php echo $row['status']; ?></td>
-                                <td><a href="tech_edit.php?id=<?php echo $ticket['id'] ?>"> Edit </a></td>
+                                <td><a href="tech_edit.php?id=<?php echo $row['tid'] ?>"> Edit </a></td>
                             
                         </tr>
                     <?php endwhile; ?>
