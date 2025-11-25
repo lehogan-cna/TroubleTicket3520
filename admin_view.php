@@ -108,7 +108,7 @@ $result = $stmt->get_result();
                             <td><?php echo $row['description']; ?></td>
                             <td><?php echo $row['priority']; ?></td>
                             <td><?php echo $row['status']; ?></td>
-                            <td><?php echo $row['eid']; ?></td>
+                            <td><?php echo $row['eid_t']; ?></td>
                             <td><a href="admin_edit.php?id=<?php echo $row['tid'] ?>"> Edit </a></td>
 
                         </tr>

@@ -30,17 +30,17 @@ $result = $stmt->get_result();
 $info = $result->fetch_assoc();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $ticket->title = $_POST['title'];
+    /*$ticket->title = $_POST['title'];
     $ticket->description = $_POST['description'];
     $ticket->priority = $_POST['priority'];
     $ticket->status = $_POST['status'];
-    $ticket->assignedTo = $_POST['assignedTo'];
+    $ticket->assignedTo = $_POST['assignedTo'];*/
 
     $title = $_POST['title'];
     $description = $_POST['description'];
     $priority = $_POST['priority'];
     $status = substr($_POST['status'], 0, 3);
-    $assignedTo = $_POST['assignedTo'];
+    $assignedTo = empty($_POST['assignedTo']) ? '' : $_POST['assignedTo'];
     $user_query = "UPDATE Ticket SET title = ?, description = ?, priority = ?, status = ?, eid_t = ? WHERE tid = ?";
     $stmt = $connect->prepare($user_query);
     $stmt->bind_param("ssisii", $title, $description, $priority, $status, $assignedTo, $id);
@@ -91,9 +91,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <label> Assigned to: <input type="text" name="assignedTo" value="<?php echo $info['eid_t']; ?>"></label><br>
         <label>Status:
             <select name="status">
-                <option value="open" <?php if($ticket->status=='open') echo 'selected'; ?>>Open</option>
-                <option value="closed" <?php if($ticket->status=='closed') echo 'selected'; ?>>Closed</option>
-                <option value="assigned" <?php if($ticket->status=='assigned') echo 'selected'; ?>>Assigned</option>
+                <option value="open" <?php if($info['status'] =='ope') echo 'selected'; ?>>Open</option>
+                <option value="closed" <?php if($info['status'] == 'clo') echo 'selected'; ?>>Closed</option>
+                <option value="assigned" <?php if($info['status'] == 'ass') echo 'selected'; ?>>Assigned</option>
             </select>
         </label><br>
         <button type="submit">Save Changes</button>

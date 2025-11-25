@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 // NEED TO SET THESE UP FOR ALL VARIABLES USED BELOW
 $title = isset($_SESSION['form_data']['title']) ? $_SESSION['form_data']['title'] : '';
 $ticket_info = isset($_SESSION['form_data']['ticket_info']) ? $_SESSION['form_data']['ticket_info'] : '';
-$priority = isset($_SESSION['form_data']['priority']) ? $_SESSION['form_data']['priority'] : '';
+$priority = ($_SESSION['form_data']['priority'] == 'high') ? 2 : (($_SESSION['form_data']['priority'] == 'low') ? 0 : 1);
 $status = isset($_SESSION['form_data']['priority']) ? $_SESSION['form_data']['priority'] : "open";
 ?>
 
@@ -88,7 +88,7 @@ $status = isset($_SESSION['form_data']['priority']) ? $_SESSION['form_data']['pr
             </div>
 
             <div class="form-group">
-                <label for="priority">User Type <span>*</span></label>
+                <label for="priority">Priority <span>*</span></label>
                 <select id="priority" name="priority" required>
                     <option value="high" <?php echo $priority == 'high' ? 'selected' : ''; ?>>High</option>
                     <option value="medium" <?php echo $priority == 'medium' ? 'selected' : ''; ?>>Medium</option>

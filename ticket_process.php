@@ -81,8 +81,11 @@ if (is_null($row)) {
 } else
     $uid = $row['uid'];
 
+
+//Convert priority to int value
+$priority = ($_SESSION['form_data']['priority'] == 'high') ? 2 : (($_SESSION['form_data']['priority'] == 'low') ? 0 : 1);
 $stmt = $connect->prepare("INSERT INTO Ticket (tid, title, description, uid, dateCreated, priority) VALUES (?,?,?,?,?,?)");
-$stmt->bind_param("issssi", $tid, $_SESSION['form_data']['title'], $_SESSION['form_data']['ticket_info'], $uid, $formattedDateTime, $_SESSION['form_data']['priority']) ;
+$stmt->bind_param("issssi", $tid, $_SESSION['form_data']['title'], $_SESSION['form_data']['ticket_info'], $uid, $formattedDateTime, $priority) ;
 $stmt->execute();
 
 // Format and save XML
@@ -94,6 +97,7 @@ $dom->save($xml_file);
 
 // Clear session data
 $registered_user = $_SESSION['form_data']['first_name'] . ' ' . $_SESSION['form_data']['last_name'];
+
 //unset($_SESSION['form_data']);
 ?>
 
