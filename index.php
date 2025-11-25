@@ -23,12 +23,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $_SESSION['form_data']['last_name'] = htmlspecialchars(trim($_POST['last_name']));
     }
 
-    /*if (empty($_POST['date_submitted'])) {
-        $errors[] = "Date is required";
-    } else {
-        $_SESSION['form_data']['date_submitted'] = htmlspecialchars(trim($_POST['date_submitted']));
-    }*/
-
     if (empty($_POST['user_type'])) {
         $_SESSION['form_data']['user_type'] = "";
     } else {
