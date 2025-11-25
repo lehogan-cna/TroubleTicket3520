@@ -373,7 +373,7 @@
     <ticket_info>?</ticket_info>
     <priority>high</priority>
     <status>open</status>
-  </ticket>
+  <description/><assignedTo/></ticket>
   <ticket id="5206" registered="2025-11-25 00:05:31">
     <first_name>Bob</first_name>
     <last_name>Bonberson</last_name>
@@ -391,22 +391,22 @@
     <date_submitted>11/25/2025 12:07:02 am</date_submitted>
     <email>bob3@bob.ca</email>
     <user_type>staff</user_type>
-    <title>FULL NAME</title>
+    <title>FULL NAMEEE</title>
     <ticket_info>Who dis</ticket_info>
-    <priority>high</priority>
+    <priority>low</priority>
     <status>open</status>
-  </ticket>
+  <description>Who dis</description><assignedTo>1</assignedTo></ticket>
   <ticket id="6041" registered="2025-11-25 00:08:30">
     <first_name>Bob</first_name>
     <last_name>Bonberson</last_name>
     <date_submitted>11/25/2025 12:08:30 am</date_submitted>
     <email>bob5@bob.ca</email>
     <user_type>staff</user_type>
-    <title>FULL NAME 2.0</title>
+    <title>FULL NAME 2.1</title>
     <ticket_info>Who dis</ticket_info>
-    <priority>high</priority>
+    <priority>low</priority>
     <status>open</status>
-  </ticket>
+  <description>Who dis</description><assignedTo/></ticket>
   <ticket id="2380" registered="2025-11-25 00:17:53">
     <first_name>Bob</first_name>
     <last_name>Bonberson</last_name>

@@ -4,6 +4,15 @@ $xml = simplexml_load_file($xml_file);
 
 $id = $_GET['id'];
 $ticket = null;
+$info = null;
+
+$connect = new mysqli("localhost", "tt_admin","tt","troubleticket");
+
+// Check connection
+if ($connect->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+echo "Connected successfully";
 
 foreach ($xml->ticket as $t) {
     if ((string)$t['id'] === $id) {
@@ -12,12 +21,30 @@ foreach ($xml->ticket as $t) {
     }
 }
 
+// MYSQL
+$user_query = "SELECT * FROM Ticket WHERE tid = ?";
+$stmt = $connect->prepare($user_query);
+$stmt->bind_param("i", $id);
+$stmt->execute();
+$result = $stmt->get_result();
+$info = $result->fetch_assoc();
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $ticket->title = $_POST['title'];
     $ticket->description = $_POST['description'];
     $ticket->priority = $_POST['priority'];
     $ticket->status = $_POST['status'];
     $ticket->assignedTo = $_POST['assignedTo'];
+
+    $title = $_POST['title'];
+    $description = $_POST['description'];
+    $priority = $_POST['priority'];
+    $status = substr($_POST['status'], 0, 3);
+    $assignedTo = $_POST['assignedTo'];
+    $user_query = "UPDATE Ticket SET title = ?, description = ?, priority = ?, status = ?, eid_t = ? WHERE tid = ?";
+    $stmt = $connect->prepare($user_query);
+    $stmt->bind_param("ssisii", $title, $description, $priority, $status, $assignedTo, $id);
+    $stmt->execute();
 
     $xml->asXML($xml_file); // Save changes back to XML
     header('Location: admin_view.php'); // Redirect back
@@ -52,16 +79,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="container">
 
     <form method="post">
-        <label>Title: <input type="text" name="title" value="<?php echo $ticket->title; ?>"></label><br>
-        <label>Description: <textarea name="description"><?php echo $ticket->description; ?></textarea></label><br>
+        <label>Title: <input type="text" name="title" value="<?php echo $info['title']; ?>"></label><br>
+        <label>Description: <textarea name="description"><?php echo $info['description']; ?></textarea></label><br>
         <label>Priority:
             <select name="priority">
-                <option value="high" <?php if($ticket->priority=='high') echo 'selected'; ?>>High</option>
-                <option value="med" <?php if($ticket->priority=='med') echo 'selected'; ?>>Medium</option>
-                <option value="low" <?php if($ticket->priority=='low') echo 'selected'; ?>>Low</option>
+                <option value="high" <?php if($info['priority']==2) echo 'selected'; ?>>High</option>
+                <option value="med" <?php if($info['priority']==1) echo 'selected'; ?>>Medium</option>
+                <option value="low" <?php if($info['priority']==0) echo 'selected'; ?>>Low</option>
             </select>
         </label><br>
-        <label> Assigned to: <input type="text" name="assignedTo" value="<?php echo $ticket->assignedTo; ?>"></label><br>
+        <label> Assigned to: <input type="text" name="assignedTo" value="<?php echo $info['eid_t']; ?>"></label><br>
         <label>Status:
             <select name="status">
                 <option value="open" <?php if($ticket->status=='open') echo 'selected'; ?>>Open</option>
