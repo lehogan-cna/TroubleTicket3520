@@ -319,4 +319,15 @@
     <priority>high</priority>
     <status>open</status>
   </ticket>
+  <ticket id="8077" registered="2025-11-24 19:24:20">
+    <first_name>CC</first_name>
+    <last_name>Admin</last_name>
+    <date_submitted>11/24/2025 07:24:20 pm</date_submitted>
+    <email>CC@cna.nl.ca</email>
+    <user_type>staff</user_type>
+    <title>42</title>
+    <ticket_info>Making sure all is not lost</ticket_info>
+    <priority>medium</priority>
+    <status>open</status>
+  </ticket>
 </tickets>
